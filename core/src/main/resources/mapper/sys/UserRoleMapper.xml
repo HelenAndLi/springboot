@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.mrsli.springboot.core.sys.mapper.UserRoleMapper">
+
+	<select id="getByUsername" resultType="pers.mrsli.springboot.core.sys.entity.Role">
+		SELECT r.id,
+			   r.name
+		FROM sys_role r
+				 LEFT JOIN sys_user_role ur
+						   ON r.id = ur.role_id
+				 LEFT JOIN sys_user u
+						   ON ur.user_id = u.id
+		WHERE u.username = #{username}
+	</select>
+
+	<select id="getByUserId" resultType="pers.mrsli.springboot.core.sys.entity.Role">
+		SELECT r.id,
+			   r.name
+		FROM sys_user_role
+		WHERE user_id = #{userId}
+	</select>
+
+	<select id="getRoleIdsByUserId" resultType="java.lang.Long">
+		SELECT role_id
+		FROM sys_user_role
+		WHERE user_id = #{userId}
+	</select>
+
+	<select id="getByRoleId" resultType="pers.mrsli.springboot.core.sys.entity.User">
+		SELECT u.id,
+			   u.username,
+			   u.realname
+		FROM sys_user u
+				 LEFT JOIN sys_user_role ur
+						   ON ur.user_id = u.id
+		WHERE ur.role_id = #{roleId}
+	</select>
+
+	<select id="pagelist" resultType="pers.mrsli.springboot.core.sys.dto.RoleUserDto">
+		SELECT u.id,
+			   u.username,
+			   u.realname,
+			   ur.role_id AS roleId
+		FROM sys_user u
+				 LEFT JOIN sys_user_role ur
+						   ON ur.user_id = u.id
+		WHERE 1=1
+		<if test='realname != null and "" != realname'>
+			AND u.realname LIKE concat('%',#{realname},'%')
+		</if>
+		<if test='username != null and "" != username'>
+			AND u.username LIKE concat('%',#{username},'%')
+		</if>
+		<if test='roleId != null'>
+			AND ur.role_id = #{roleId}
+		</if>
+		limit #{limit}, #{pageSize}
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT
+		count(0)
+		FROM sys_user u
+		LEFT JOIN sys_user_role ur
+		ON ur.user_id = u.id
+		WHERE 1=1
+		<if test='realname != null and "" != realname'>
+			AND u.realname LIKE concat('%',#{realname},'%')
+		</if>
+		<if test='username != null and "" != username'>
+			AND u.username LIKE concat('%',#{username},'%')
+		</if>
+		<if test='roleId != null'>
+			AND ur.role_id = #{roleId}
+		</if>
+	</select>
+</mapper>

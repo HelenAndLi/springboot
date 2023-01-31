@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.mrsli.springboot.core.sys.mapper.UserOfficeMapper">
+
+	<select id="getByUserId" resultType="pers.mrsli.springboot.core.sys.entity.UserOffice">
+		SELECT id,
+			   user_id,
+			   user_uuid,
+			   office_id,
+			   office_uuid
+		FROM sys_user_office
+		WHERE u.user_id = #{userId}
+	</select>
+
+	<select id="getByUserUuid" resultType="pers.mrsli.springboot.core.sys.entity.Office">
+		SELECT off.*
+		FROM sys_office off
+				 left join sys_user_office uf on uf.office_uuid = off.uuid
+		WHERE uf.user_uuid = #{userUuid}
+	</select>
+
+	<select id="getOffUuidByUserId" resultType="java.lang.String">
+		SELECT office_uuid
+		FROM sys_user_office uf
+		WHERE uf.user_id = #{userId}
+	</select>
+
+	<delete id="deleteByUserId">
+		delete
+		from sys_user_office
+		where user_id = #{userId}
+	</delete>
+</mapper>

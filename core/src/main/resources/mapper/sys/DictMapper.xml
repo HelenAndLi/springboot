@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pers.mrsli.springboot.core.sys.mapper.DictMapper">
+	<select id="all" resultType="pers.mrsli.springboot.core.sys.entity.Dict">
+		SELECT *
+		FROM sys_dict
+		WHERE del_flag = '0'
+		ORDER BY `type`, sort, update_date DESC
+	</select>
+
+	<select id="pagelist" resultType="pers.mrsli.springboot.core.sys.entity.Dict">
+		select *
+		from sys_dict
+		where 1=1
+		<if test="type != null and '' != type">
+			AND `type` = #{type}
+		</if>
+		<if test='descr != null and "" != descr'>
+			AND `descr` LIKE concat('%',#{descr},'%')
+		</if>
+		ORDER BY create_time
+		limit #{limit}, #{pageSize}
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		select count(*)
+		from sys_dict
+		where 1=1
+		<if test="type != null and '' != type">
+			AND `type` = #{type}
+		</if>
+		<if test='descr != null and "" != descr'>
+			AND `descr` LIKE concat('%',#{descr},'%')
+		</if>
+	</select>
+
+	<select id="getByTypeAndLabel" resultType="pers.mrsli.springboot.core.sys.entity.Dict">
+		select *
+		from sys_dict
+		where `type` = #{type}
+		  and label = #{label}
+	</select>
+
+
+	<select id="getValue" resultType="pers.mrsli.springboot.core.sys.entity.Dict">
+		select *
+		from sys_dict
+		where `type` = #{type}
+		  and label = #{label} limit 1
+	</select>
+
+	<select id="allTypes" resultType="java.lang.String">
+		select distinct `type`
+		from sys_dict
+	</select>
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.mrsli.springboot.core.sys.mapper.UserMapper">
+
+	<select id="getByUsername" resultType="pers.mrsli.springboot.core.sys.entity.User">
+		SELECT id,
+			   uuid,
+			   realname,
+			   username,
+			   mobile,
+			   create_time AS createTime,
+			   update_time AS updateTime
+		FROM sys_user
+		where username = #{username}
+		  and del_flag = 0 limit 1
+	</select>
+
+	<select id="getByUuid" resultType="pers.mrsli.springboot.core.sys.entity.User">
+		SELECT id,
+			   uuid,
+			   realname,
+			   username,
+			   mobile,
+			   create_time AS createTime,
+			   update_time AS updateTime
+		FROM sys_user
+		where uuid = #{uuid}
+		  and del_flag = 0 limit 1
+	</select>
+	<delete id="deleteByUuid">
+		delete
+		from sys_user
+		where uuid = #{uuid}
+	</delete>
+
+	<select id="getByMobile" resultType="pers.mrsli.springboot.core.sys.entity.User">
+		SELECT id,
+			   uuid,
+			   realname,
+			   username,
+			   mobile,
+			   create_time AS createTime,
+			   update_time AS updateTime
+		FROM sys_user
+		where mobile = #{mobile}
+		  and del_flag = 0 limit 1
+	</select>
+
+	<update id="update">
+		UPDATE sys_user
+		SET `realname`    = #{realname},
+			`mobile`      = #{mobile},
+			`update_time` = #{updateTime},
+			`update_by`   = #{updateBy},
+			`pwd`         = #{pwd}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updatePwd">
+		UPDATE sys_user
+		SET `pwd`         = #{pwd},
+			`update_time` = #{updateTime},
+			`update_by`   = #{updateBy}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateLogin">
+		UPDATE sys_user
+		SET `latest_login_time` = #{latestLoginTime},
+			`login_ip`          = #{loginIp},
+			`pwd_expiration`    = #{pwdExpiration}
+		WHERE id = #{id}
+	</update>
+
+	<update id="recoverByUuid">
+		update sys_user
+		set del_flag=0
+		where id = #{id}
+	</update>
+
+	<select id="pagelist" resultType="pers.mrsli.springboot.core.sys.entity.User">
+		SELECT id,
+		username,
+		pwd,
+		realname,
+		mobile,
+		uuid,
+		status AS "status",
+		`create_time` AS "createTime",
+		`create_by` AS "createBy",
+		latest_login_time AS "latestLoginTime",
+		update_time AS "updateTime",
+		update_by AS "updateBy"
+		FROM sys_user
+		where del_flag = 0
+		<if test='username != null and "" != username'>
+			AND username LIKE concat('%',#{username},'%')
+		</if>
+		<if test='realname != null and "" != realname'>
+			AND realname LIKE concat('%',#{realname},'%')
+		</if>
+		<if test='mobile != null and "" != mobile'>
+			AND mobile LIKE concat('%',#{mobile},'%')
+		</if>
+		<if test="pageNo!=null">
+			limit #{limit},#{pageSize}
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long">
+		SELECT
+		count(id)
+		FROM sys_user
+		where del_flag = 0
+		<if test='username != null and "" != username'>
+			AND username LIKE concat('%',#{username},'%')
+		</if>
+		<if test='realname != null and "" != realname'>
+			AND realname LIKE concat('%',#{realname},'%')
+		</if>
+		<if test='mobile != null and "" != mobile'>
+			AND mobile LIKE concat('%',#{mobile},'%')
+		</if>
+	</select>
+</mapper>

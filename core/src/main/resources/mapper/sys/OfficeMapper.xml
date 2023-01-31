@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pers.mrsli.springboot.core.sys.mapper.OfficeMapper">
+	<select id="getByUuid" resultType="pers.mrsli.springboot.core.sys.entity.Office">
+		select id,
+			   name,
+		       uuid,
+			   pid,
+			   p_uuid,
+			   pids,
+			   zone_level
+		from sys_office
+		where uuid = #{uuid} limit 1
+	</select>
+
+	<delete id="deleteByUuid">
+		delete
+		from sys_office
+		where uuid = #{uuid}
+	</delete>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>pers.mrsli.springboot</groupId>
+		<artifactId>springboot-parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<groupId>pers.mrsli.springboot</groupId>
+	<artifactId>springboot-core</artifactId>
+	<name>springboot-core</name>
+	<version>1.0.0</version>
+
+	<packaging>jar</packaging>
+
+	<description>Personal Spring Boot Application core module.</description>
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+	<dependencies>
+
+		<dependency>
+			<groupId>pers.mrsli.springboot</groupId>
+			<artifactId>springboot-common</artifactId>
+			<version>1.0.0</version>
+<!--			<systemPath>D:/mvn-repository/pers/mrsli/springboot/springboot-common/1.0.0/springboot-common-1.0.0.jar</systemPath>-->
+		</dependency>
+
+		<!-- 热部署 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+
+		<!-- 单元测试 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

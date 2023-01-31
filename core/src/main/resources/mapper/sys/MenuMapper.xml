@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.mrsli.springboot.core.sys.mapper.MenuMapper">
+
+	<select id="getByPid" resultType="pers.mrsli.springboot.core.sys.entity.Menu">
+		SELECT *
+		FROM sys_menu
+		where pid = #{pid}
+		order by sort
+	</select>
+
+	<select id="countByPid" resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM sys_menu
+		where pid = #{pid}
+	</select>
+
+	<select id="getAll" resultType="pers.mrsli.springboot.core.sys.entity.Menu">
+		SELECT *
+		FROM sys_menu
+	</select>
+
+	<select id="getByUserId" resultType="pers.mrsli.springboot.core.sys.entity.Menu">
+		SELECT m.*
+		FROM sys_menu m
+				 left join sys_role_menu rm on rm.menu_id = m.id
+				 left join sys_user_role ur
+						   on ur.role_id = rm.role_id
+		where ur.user_id = #{userId}
+	</select>
+
+	<select id="getByUserIdAndPid" resultType="pers.mrsli.springboot.core.sys.entity.Menu">
+		SELECT m.*
+		FROM sys_menu m
+				 left join sys_role_menu rm on rm.menu_id = m.id
+				 left join sys_user_role ur
+						   on ur.role_id = rm.role_id
+		where ur.user_id = #{userId} and m.pid = #{pid}
+	</select>
+
+
+	<update id="updateSorts" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update sys_menu
+			<set>
+				`sort`=#{item.sort}
+			</set>
+			where `id` = #{item.id}
+		</foreach>
+	</update>
+
+	<update id="updateSort">
+		update sys_menu
+		set `sort`=#{sort}
+		where `id` = #{id}
+	</update>
+
+</mapper>
